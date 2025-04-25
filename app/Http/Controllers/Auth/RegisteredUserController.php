@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
-        Mail:: TO($user->email)->send(new WelcomeMail($user));
+        // Mail:: TO($user->email)->send(new WelcomeMail($user));
 
         Auth::login($user);
 

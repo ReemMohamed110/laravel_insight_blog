@@ -25,13 +25,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
        Gate::define('create_post',function (User $user){
-        return in_array($user->role,['admin','writer']);
+        return in_array($user->role,['admin','user']);
        });
-       Gate::define('delete_post',function (User $user){
-        return $user->role==='admin';
+       Gate::define('delete_post',function (User $user,Post $post){
+        return $user->id===$post->user_id || $user->role==='admin';
        });
+    
        Gate::define('edit_post',function (User $user,Post $post){
         return $user->id===$post->user_id || $user->role==='admin';
+       });
+       Gate::define('add_admin',function (User $user){
+        return $user->role==='admin';
        });
        Paginator::useBootstrapFive();
     }

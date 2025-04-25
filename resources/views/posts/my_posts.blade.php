@@ -1,13 +1,13 @@
 @extends('layouts.app_blog')
 @section('content')
     <!-- Page Header-->
-    <header class="masthead" style="background-image: url('assets/img/photo-1487611459768-bd414656ea10.avif')">
+    <header class="masthead" style="background-image: url('assets/img/home-bg.jpg')">
         <div class="container position-relative px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <div class="site-heading">
-                        <h1>Laravel Insight</h1>
-                        <span class="subheading">A Blog For Junior Dev Notes</span>
+                        <h1>Clean Blog</h1>
+                        <span class="subheading">A Blog Theme by Start Bootstrap</span>
                     </div>
                 </div>
             </div>
@@ -20,7 +20,10 @@
         </div>
     @endif
     @isset($posts)
-        @forelse ($posts as $post)
+    @php
+        $id=Auth::id();
+    @endphp
+        @forelse ($posts->where('user_id',$id) as $post)
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
@@ -31,17 +34,14 @@
                                 <h2 class="post-title">{{ $post->title }}</h2>
                                 <h3 class="post-subtitle">{{ \Str::limit($post->content, 50) }}....</h3>
                                 @if ($post->image)
-                                    <img width="300" height="200" src="{{ asset('storage/' . $post->image) }}"></td>
+                                    <img width="100" height="100" src="{{ asset('storage/' . $post->image) }}"></td>
                                 @endif
                             </a>
                             <p class="post-meta">
                                 Posted by : {{ $post->user->name }}
-                            </p> 
-                            <p class="post-meta">
-                                created at : {{ $post->created_at }}
-                            </p>  
-                                
-                            
+                                <a href="#!">Start Bootstrap</a>
+                                {{ $post->created_at }}
+                            </p>
                         </div>
                         <!-- Divider-->
                         <hr class="my-4" />
@@ -53,7 +53,7 @@
             </div>
 
         @empty
-            <h1>there is no posts</h1>
+            <h1>you aren't have posts </h1>
         @endforelse
         <div>
             {{ $posts->links() }}

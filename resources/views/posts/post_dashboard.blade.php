@@ -1,6 +1,6 @@
 @extends('layouts.app_blog')
 @section('content')
-    <main class="mb-4">
+    <main class="mb-4 my-5">
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
@@ -9,13 +9,18 @@
                         <!-- * * * * * * * * * * * * * * *-->
 
                         <div class="col-12">
+                            <div class="d-flex justify-content-end mb-4 gap-2">
                             @can('create_post')
-                                <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase"
-                                        href={{ url('create_post') }}>Add New Post</a></div>
+                                <a class="btn btn-primary text-uppercase gap-2"
+                                        href={{ url('create_post') }}>Add New Post</a>
                             @endcan
-
+                            @can('add_admin')
+                            <a class="btn btn-primary text-uppercase gap-2"
+                                    href={{ url('add_admin') }}>Add New Admin</a>
+                            @endcan
+                        </div>
                             @isset($posts)
-                                <table class="table table-bordered">
+                                <table class="table table-bordered ">
                                     <thead>
                                         @if (session('success'))
                                             <div class="alert alert-success">
@@ -52,7 +57,7 @@
                                                 <td> {{ $post->created_at }}</td>
                                                 <td>
                                                     <a href="{{ url('single_post/' . $post->id) }}" class="btn btn-success my-3">view</a>
-                                                    @can('delete_post')
+                                                    @can('delete_post',$post)
                                                         <form action={{ url('delete_post/' . $post->id) }} method='post'>
                                                             @csrf
                                                             @method('delete')

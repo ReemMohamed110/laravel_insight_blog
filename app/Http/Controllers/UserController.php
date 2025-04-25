@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -41,17 +43,27 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        //
+        return view('posts.add_admin');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'email' => "required|exists:users,email"
+        ]);
+        $user = User::where('email', $request->email)->update([
+            'role' => 'admin',
+        ]);
+        if ($user) {
+            return redirect()->back()->with(['success' => 'admin added successfully']);
+        } else {
+            return redirect()->back()->with(['fail' => 'email not found']);
+        }
     }
 
     /**
