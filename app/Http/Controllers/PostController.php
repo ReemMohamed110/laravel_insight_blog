@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -16,9 +17,13 @@ class PostController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+    {   Debugbar::startMeasure('render','Time for rendering');
         $posts = Post::with('user')->latest()->paginate(10);
+        
+        Debugbar::stopMeasure('render');
+        
         return view('welcome')->with('posts', $posts);
+        
     }
     
     public function myPosts()
